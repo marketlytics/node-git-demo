@@ -1,0 +1,57 @@
+extends layout
+
+block content
+	div.container
+
+		h3 You can use this simple UI to fetch, pull and checkout branches.
+		
+		div.row
+			div.col-md-12
+				div.col-md-6.lead.well
+						label Current Branch:
+
+						table.table
+							tr
+								td
+									small #{localHead.branchName}
+								if (localHead.status == 'out-of-date')
+									td
+										small.text-center.text-danger #{localHead.status}
+									td
+										a.btn.btn-primary(href="/git/pull/#{localHead.branchName}") Pull
+								else
+									td
+										small.text-center.text-success #{localHead.status}
+						p.text-justify 
+							small Please press fetch to get the latest updates from remote repository.
+
+						a.btn.btn-primary(href="/git/fetch") Fetch
+			div.col-md-12.lead
+				div.well.clearfix
+					div.col-md-6
+							label Local Branches:
+
+							table.table
+								for index in localInfo
+									tr
+										td
+											small #{index.branchName}
+										if (localHead.status == 'out-of-date')
+											td
+												small.text-center.text-danger #{index.status}
+										else
+											td
+												small.text-center.text-success #{index.status}
+										td
+											a.btn.btn-primary(href="/git/checkout/#{index.branchName}") Checkout
+					div.col-md-5
+						label Remote Branches:
+
+						table.table
+							for branch in remoteInfo
+								tr
+									td
+										small #{branch.branchName}
+									td
+										if !branch.status
+											a.btn.btn-primary(href="/git/track/#{branch.branchName}") Track
